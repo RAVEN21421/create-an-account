@@ -179,6 +179,11 @@
                 </div>
 
                 <div class="input-group">
+                    <label>Username (optional)</label>
+                    <input type="text" id="username" placeholder="display name" autocomplete="off">
+                </div>
+
+                <div class="input-group">
                     <label>Password</label>
                     <input type="password" id="password" placeholder="··········" autocomplete="off" required>
                 </div>
@@ -212,6 +217,7 @@
 
             // DOM
             const emailField = document.getElementById('email');
+            const usernameField = document.getElementById('username');
             const passwordField = document.getElementById('password');
             const confirmField = document.getElementById('confirmPassword');
             const form = document.getElementById('signupForm');
